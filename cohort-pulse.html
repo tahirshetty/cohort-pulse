@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A&M Cohort Pulse · FY26</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #05111f;
+    --navy-2: #0a1e33;
+    --navy-3: #0f2847;
+    --navy-4: #1a3a5c;
+    --navy-5: #234b73;
+    --amber: #f59e0b;
+    --amber-light: #fcd34d;
+    --slate: #94a3b8;
+    --slate-dim: #475569;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --green: #22c55e;
+    --r1: #ef4444; --r2: #f97316; --r3: #f59e0b; --r4: #84cc16; --r5: #22c55e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(245,158,11,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,158,11,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(5,17,31,0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--navy-4);
+    padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--amber); box-shadow: 0 0 14px var(--amber);
+    animation: pulse-dot 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+  .logo-text { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; }
+  .logo-year { font-size: 11px; color: var(--slate-dim); margin-left: 2px; }
+  .nav-tabs { display: flex; gap: 6px; }
+  .nav-tab {
+    padding: 6px 18px; border-radius: 6px;
+    border: 1.5px solid var(--navy-4);
+    background: transparent; color: var(--slate-dim);
+    cursor: pointer; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .nav-tab:hover { border-color: var(--navy-5); color: var(--slate); }
+  .nav-tab.active { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+
+  /* ── Views ── */
+  .view { display: none; position: relative; z-index: 1; animation: fadeUp 0.35s ease; }
+  .view.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Survey ── */
+  .survey-wrap { max-width: 620px; margin: 0 auto; padding: 48px 24px 80px; }
+  .progress-track { display: flex; gap: 6px; margin-bottom: 40px; }
+  .progress-seg {
+    flex: 1; height: 3px; border-radius: 2px;
+    background: var(--navy-4); transition: background 0.4s;
+  }
+  .progress-seg.done { background: var(--amber); }
+
+  .step-label { font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 6px; }
+  .step-title { font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+  .step-sub { font-size: 13px; color: var(--slate-dim); margin-bottom: 32px; line-height: 1.6; }
+
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 11px; color: var(--slate-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .field select {
+    width: 100%; padding: 12px 40px 12px 16px;
+    background: var(--navy-2); border: 1.5px solid var(--navy-4);
+    border-radius: 8px; color: var(--text); font-size: 14px;
+    font-family: 'DM Sans', sans-serif; outline: none; cursor: pointer;
+    transition: border-color 0.2s; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .field select:focus { border-color: var(--amber); }
+  .field select option { background: #0a1e33; }
+
+  .rating-block { margin-bottom: 28px; }
+  .rating-q-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 12px; color: var(--slate-dim); margin-bottom: 4px; }
+  .rating-q-label { font-size: 14px; color: var(--text); line-height: 1.55; margin-bottom: 12px; }
+  .rating-buttons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .rating-btn {
+    width: 44px; height: 44px; border-radius: 8px;
+    border: 1.5px solid var(--navy-4); background: transparent;
+    color: var(--slate-dim); font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif;
+  }
+  .rating-btn:hover { transform: translateY(-2px); }
+  .rating-btn.r1.sel,.rating-btn.r1:hover { background:#ef4444;border-color:#ef4444;color:#fff; }
+  .rating-btn.r2.sel,.rating-btn.r2:hover { background:#f97316;border-color:#f97316;color:#fff; }
+  .rating-btn.r3.sel,.rating-btn.r3:hover { background:#f59e0b;border-color:#f59e0b;color:#05111f; }
+  .rating-btn.r4.sel,.rating-btn.r4:hover { background:#84cc16;border-color:#84cc16;color:#05111f; }
+  .rating-btn.r5.sel,.rating-btn.r5:hover { background:#22c55e;border-color:#22c55e;color:#05111f; }
+  .rating-pill {
+    font-size: 11px; color: var(--slate-dim); margin-left: 6px;
+    font-style: italic; min-width: 120px;
+  }
+  .rating-legend { display: flex; justify-content: space-between; font-size: 10px; color: var(--slate-dim); margin-top: 8px; padding: 0 2px; }
+
+  textarea {
+    width: 100%; padding: 14px 16px;
+    background: var(--navy-2); border: 1.5px solid var(--navy-4);
+    border-radius: 8px; color: var(--text); font-size: 14px;
+    font-family: 'DM Sans', sans-serif; outline: none; resize: vertical;
+    transition: border-color 0.2s; min-height: 140px; line-height: 1.6;
+  }
+  textarea:focus { border-color: var(--amber); }
+  textarea::placeholder { color: var(--slate-dim); }
+
+  .btn-row { display: flex; gap: 12px; margin-top: 36px; }
+  .btn {
+    padding: 13px 0; border-radius: 8px; border: none;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .btn-back { flex: 1; background: transparent; border: 1.5px solid var(--navy-4); color: var(--slate); }
+  .btn-back:hover { border-color: var(--navy-5); }
+  .btn-next { flex: 2; background: var(--amber); color: var(--navy); }
+  .btn-next:hover { background: var(--amber-light); transform: translateY(-1px); }
+  .btn-next:disabled { background: var(--navy-4); color: var(--slate-dim); cursor: not-allowed; transform: none; }
+  .btn-submit { flex: 2; background: var(--green); color: var(--navy); }
+  .btn-submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  /* ── Thanks ── */
+  .thanks-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: calc(100vh - 60px);
+    text-align: center; padding: 40px 24px;
+  }
+  .thanks-check {
+    width: 84px; height: 84px; border-radius: 50%;
+    background: rgba(34,197,94,0.12); border: 2px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px; margin-bottom: 24px;
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn { from { transform:scale(0);opacity:0; } to { transform:scale(1);opacity:1; } }
+  .thanks-title { font-family:'Playfair Display',serif; font-size: 34px; margin-bottom: 10px; }
+  .thanks-sub { color: var(--slate-dim); font-size: 14px; margin-bottom: 32px; max-width: 420px; line-height: 1.7; }
+  .thanks-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .thanks-btn { padding: 11px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .thanks-btn-outline { background: transparent; border: 1.5px solid var(--navy-4); color: var(--slate); }
+  .thanks-btn-fill { background: var(--amber); border: none; color: var(--navy); }
+  .thanks-btn:hover { transform: translateY(-1px); }
+
+  /* ── Dashboard ── */
+  .dash-wrap { padding: 32px 28px 60px; max-width: 1200px; margin: 0 auto; }
+  .dash-header { margin-bottom: 28px; }
+  .dash-eyebrow { font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 4px; }
+  .dash-title { font-family:'Playfair Display',serif; font-size: 30px; margin-bottom: 4px; }
+  .dash-meta { font-size: 13px; color: var(--slate-dim); }
+  .dash-meta strong { color: var(--amber); font-weight: 600; }
+
+  .slicer-bar {
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;
+    background: var(--navy-2); border: 1px solid var(--navy-4);
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 24px;
+  }
+  .slicer-item {}
+  .slicer-label { font-size: 10px; color: var(--slate-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .slicer-bar select {
+    padding: 9px 32px 9px 12px; background: var(--navy);
+    border: 1.5px solid var(--navy-4); border-radius: 6px;
+    color: var(--text); font-size: 13px; font-family: 'DM Sans', sans-serif;
+    outline: none; cursor: pointer; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+    transition: border-color 0.2s;
+  }
+  .slicer-bar select:focus { border-color: var(--amber); }
+  .slicer-bar select option { background: #0a1e33; }
+  .slicer-reset {
+    padding: 9px 16px; background: transparent; border: 1.5px solid var(--navy-4);
+    border-radius: 6px; color: var(--slate-dim); cursor: pointer; font-size: 12px;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s; align-self: flex-end;
+  }
+  .slicer-reset:hover { border-color: var(--amber); color: var(--amber); }
+  .slicer-count { margin-left: auto; align-self: flex-end; font-size: 12px; color: var(--amber); font-weight: 600; }
+
+  .section-heading { font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 12px; padding-left: 2px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .kpi-card {
+    background: var(--navy-2); border: 1px solid var(--navy-4);
+    border-radius: 10px; padding: 18px 18px 14px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .kpi-card:hover { border-color: var(--navy-5); transform: translateY(-2px); }
+  .kpi-label { font-size: 10px; color: var(--slate-dim); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 10px; line-height: 1.4; }
+  .kpi-value { font-family: 'Playfair Display', serif; font-size: 40px; line-height: 1; font-weight: 700; }
+  .kpi-n { font-size: 11px; color: var(--slate-dim); margin-top: 6px; }
+
+  hr.divider { border: none; border-top: 1px solid var(--navy-4); margin: 22px 0; }
+
+  .chart-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px; }
+  .chart-card { background: var(--navy-2); border: 1px solid var(--navy-4); border-radius: 10px; padding: 20px 22px; }
+  .chart-title { font-size: 11px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .chart-sub { font-size: 10px; color: var(--slate-dim); margin-bottom: 16px; }
+
+  .dist-bars { display: flex; gap: 8px; align-items: flex-end; height: 84px; }
+  .dist-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .dist-bar { width: 100%; border-radius: 3px 3px 0 0; transition: height 0.6s cubic-bezier(0.34,1.3,0.64,1); }
+  .dist-count { font-size: 10px; color: var(--slate-dim); }
+  .dist-num { font-size: 10px; color: var(--slate-dim); }
+
+  .hbar-row { margin-bottom: 10px; }
+  .hbar-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .hbar-lbl { font-size: 12px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+  .hbar-val { font-size: 12px; font-weight: 700; }
+  .hbar-track { height: 6px; background: var(--navy-3); border-radius: 3px; overflow: hidden; }
+  .hbar-fill { height: 100%; border-radius: 3px; transition: width 0.7s cubic-bezier(0.34,1.2,0.64,1); }
+
+  .comments-section { background: var(--navy-2); border: 1px solid var(--navy-4); border-radius: 10px; padding: 22px 24px; }
+  .comments-title { font-size: 11px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .comments-scroll { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+  .comments-scroll::-webkit-scrollbar { width: 4px; }
+  .comments-scroll::-webkit-scrollbar-track { background: var(--navy-3); border-radius: 2px; }
+  .comments-scroll::-webkit-scrollbar-thumb { background: var(--navy-5); border-radius: 2px; }
+  .comment-card { padding: 12px 16px; background: var(--navy); border-radius: 8px; border-left: 3px solid var(--amber); }
+  .comment-meta { font-size: 11px; color: var(--slate-dim); margin-bottom: 6px; }
+  .comment-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .comments-empty { font-size: 13px; color: var(--slate-dim); font-style: italic; text-align: center; padding: 28px; }
+
+  /* ── PIN Modal ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(5,17,31,0.88); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  }
+  .modal-box {
+    background: var(--navy-2); border: 1px solid var(--navy-4);
+    border-radius: 14px; padding: 40px 36px; width: 360px; max-width: 90vw;
+    text-align: center; animation: fadeUp .3s ease;
+  }
+  .modal-icon { font-size: 32px; margin-bottom: 16px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 6px; }
+  .modal-sub { font-size: 13px; color: var(--slate-dim); margin-bottom: 24px; }
+  .pin-input {
+    width: 100%; padding: 14px; text-align: center; letter-spacing: 0.4em;
+    font-size: 22px; font-weight: 700; background: var(--navy);
+    border: 1.5px solid var(--navy-4); border-radius: 8px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; outline: none; transition: border-color .2s;
+  }
+  .pin-input:focus { border-color: var(--amber); }
+  .pin-error {
+    display: none; margin-top: 10px; font-size: 12px; color: #ef4444;
+    background: rgba(239,68,68,0.1); border-radius: 6px; padding: 8px;
+  }
+  .pin-btn {
+    width: 100%; margin-top: 16px; padding: 13px;
+    background: var(--amber); border: none; border-radius: 8px;
+    color: var(--navy); font-size: 14px; font-weight: 700;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all .2s;
+  }
+  .pin-btn:hover { background: var(--amber-light); }
+  .pin-cancel {
+    display: block; margin-top: 12px; font-size: 12px; color: var(--slate-dim);
+    cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif;
+    width: 100%;
+  }
+  .pin-cancel:hover { color: var(--slate); }
+
+  /* ── Recipient Tracker ── */
+  .recipient-section {
+    background: var(--navy-2); border: 1px solid var(--navy-4);
+    border-radius: 10px; padding: 22px 24px; margin-bottom: 14px;
+  }
+  .recipient-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+  .recipient-title { font-size: 11px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; }
+  .recipient-stats { display: flex; gap: 20px; }
+  .rstat { text-align: center; }
+  .rstat-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1; }
+  .rstat-lbl { font-size: 10px; color: var(--slate-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+  .completion-bar-wrap { margin-bottom: 16px; }
+  .completion-bar-track { height: 8px; background: var(--navy-3); border-radius: 4px; overflow: hidden; }
+  .completion-bar-fill { height: 100%; background: var(--amber); border-radius: 4px; transition: width 0.7s cubic-bezier(0.34,1.2,0.64,1); }
+  .completion-pct { font-size: 12px; color: var(--amber); font-weight: 600; margin-top: 6px; }
+
+  .recipient-input-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .recipient-textarea {
+    flex: 1; min-width: 200px; padding: 10px 14px; min-height: 80px;
+    background: var(--navy); border: 1.5px solid var(--navy-4); border-radius: 8px;
+    color: var(--text); font-size: 12px; font-family: 'DM Sans', sans-serif;
+    outline: none; resize: vertical; transition: border-color .2s; line-height: 1.6;
+  }
+  .recipient-textarea:focus { border-color: var(--amber); }
+  .recipient-textarea::placeholder { color: var(--slate-dim); }
+  .recipient-load-btn {
+    padding: 10px 18px; background: var(--amber); border: none; border-radius: 8px;
+    color: var(--navy); font-size: 13px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; align-self: flex-end;
+    transition: all .2s; white-space: nowrap;
+  }
+  .recipient-load-btn:hover { background: var(--amber-light); }
+
+  .recipient-table-wrap { max-height: 260px; overflow-y: auto; }
+  .recipient-table-wrap::-webkit-scrollbar { width: 4px; }
+  .recipient-table-wrap::-webkit-scrollbar-track { background: var(--navy-3); }
+  .recipient-table-wrap::-webkit-scrollbar-thumb { background: var(--navy-5); border-radius: 2px; }
+  .recipient-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .recipient-table th {
+    text-align: left; font-size: 10px; color: var(--slate-dim);
+    text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 10px;
+    border-bottom: 1px solid var(--navy-4); font-weight: 500;
+  }
+  .recipient-table td { padding: 8px 10px; border-bottom: 1px solid var(--navy-3); color: var(--text-dim); }
+  .recipient-table tr:last-child td { border-bottom: none; }
+  .status-pill {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+  }
+  .status-pill.pending { background: rgba(71,85,105,0.3); color: var(--slate); }
+  .status-pill.completed { background: rgba(34,197,94,0.15); color: var(--green); }
+  .recipient-empty { font-size: 12px; color: var(--slate-dim); font-style: italic; padding: 16px 10px; }
+
+  @media (max-width: 600px) {
+    header { padding: 0 14px; }
+    .logo-text { font-size: 11px; }
+    .nav-tab { padding: 5px 10px; font-size: 10px; }
+    .survey-wrap { padding: 32px 16px 60px; }
+    .step-title { font-size: 24px; }
+    .dash-wrap { padding: 20px 14px 40px; }
+    .slicer-bar { padding: 12px; gap: 10px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ PIN MODAL ════════════════════ -->
+<div class="modal-overlay" id="pin-modal" onclick="if(event.target===this)closePinModal()">
+  <div class="modal-box">
+    <div class="modal-icon">🔒</div>
+    <h2 class="modal-title">Dashboard Access</h2>
+    <p class="modal-sub">Enter your admin PIN to access the analytics dashboard.</p>
+    <input class="pin-input" id="pin-input" type="password" maxlength="10" placeholder="• • • •"
+      onkeydown="if(event.key==='Enter')submitPin()">
+    <div class="pin-error" id="pin-error">Incorrect PIN. Please try again.</div>
+    <button class="pin-btn" onclick="submitPin()">Unlock Dashboard</button>
+    <button class="pin-cancel" onclick="closePinModal()">Cancel</button>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <span class="logo-text">A&amp;M COHORT PULSE</span>
+    <span class="logo-year">FY26</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showView('survey')" id="tab-survey">📋 Survey</button>
+    <button class="nav-tab" onclick="showView('dashboard')" id="tab-dashboard">📊 Dashboard</button>
+  </div>
+</header>
+
+<!-- ════════════════════ SURVEY ════════════════════ -->
+<div class="view active" id="view-survey">
+  <div class="survey-wrap">
+    <div class="progress-track" id="progress-track"></div>
+
+    <!-- Step 0 -->
+    <div class="step" id="step-0">
+      <div class="step-label">Step 1 of 5</div>
+      <h1 class="step-title">About You</h1>
+      <p class="step-sub">Your responses are entirely anonymous. This data helps us identify trends and ensure your cohort leads have the right context.</p>
+      <div class="field">
+        <label>Level</label>
+        <select id="f-level" onchange="updateState()">
+          <option value="">Select your level…</option>
+          <option>Senior Director (SD)</option>
+          <option>Director (D)</option>
+          <option>Senior Manager (SM)</option>
+          <option>Manager</option>
+          <option>Senior Associate</option>
+          <option>Associate</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Business Unit</label>
+        <select id="f-bu" onchange="updateState()">
+          <option value="">Select your business unit…</option>
+          <option>Restructuring</option>
+          <option>Performance Improvement</option>
+          <option>Transaction Advisory</option>
+          <option>Disputes &amp; Investigations</option>
+          <option>Tax</option>
+          <option>CFO Advisory</option>
+          <option>Technology</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Home Office</label>
+        <select id="f-office" onchange="updateState()">
+          <option value="">Select your home office…</option>
+          <option>Sydney</option>
+          <option>Melbourne</option>
+          <option>Brisbane</option>
+          <option>Perth</option>
+        </select>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-next" id="btn-0" onclick="goStep(1)" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step" id="step-1" style="display:none">
+      <div class="step-label">Step 2 of 5 · Performance Management</div>
+      <h1 class="step-title">Performance Management</h1>
+      <p class="step-sub">How effectively are the performance tools and processes working for you?</p>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q1a</div>
+        <div class="rating-q-label">The Performance Management tool works effectively for me</div>
+        <div class="rating-buttons" id="q1a-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q1b</div>
+        <div class="rating-q-label">I understand the Performance Management process</div>
+        <div class="rating-buttons" id="q1b-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q1c</div>
+        <div class="rating-q-label">I am clear on what I am being measured against</div>
+        <div class="rating-buttons" id="q1c-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(0)">← Back</button>
+        <button class="btn btn-next" id="btn-1" onclick="goStep(2)" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step" id="step-2" style="display:none">
+      <div class="step-label">Step 3 of 5 · Talent &amp; Staffing</div>
+      <h1 class="step-title">Talent &amp; Staffing</h1>
+      <p class="step-sub">Questions about how skills, preferences and staffing decisions are managed.</p>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q2</div>
+        <div class="rating-q-label" id="q2-label">Loading…</div>
+        <div class="rating-buttons" id="q2-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q3</div>
+        <div class="rating-q-label">A&amp;M is considered one of the best places to work for someone with my skills and experience</div>
+        <div class="rating-buttons" id="q3-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(1)">← Back</button>
+        <button class="btn btn-next" id="btn-2" onclick="goStep(3)" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step" id="step-3" style="display:none">
+      <div class="step-label">Step 4 of 5 · Communication</div>
+      <h1 class="step-title">Communication</h1>
+      <p class="step-sub">How effectively is information communicated across the firm and within your business unit?</p>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q4</div>
+        <div class="rating-q-label">Firm-wide communication at this organisation is effective</div>
+        <div class="rating-buttons" id="q4-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-q-sub">Q5</div>
+        <div class="rating-q-label">Business unit / Practice communication at this organisation is effective</div>
+        <div class="rating-buttons" id="q5-btns"></div>
+        <div class="rating-legend"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(2)">← Back</button>
+        <button class="btn btn-next" id="btn-3" onclick="goStep(4)" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step" id="step-4" style="display:none">
+      <div class="step-label">Step 5 of 5 · Optional</div>
+      <h1 class="step-title">Additional Comments</h1>
+      <p class="step-sub">Flag any other key topics for consideration or discussion with cohort leads. This section is optional.</p>
+      <textarea id="f-comments" placeholder="Share any additional feedback, themes, or suggestions you'd like cohort leads to consider…"></textarea>
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(3)">← Back</button>
+        <button class="btn btn-submit" onclick="submitSurvey()">Submit Response ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ THANKS ════════════════════ -->
+<div class="view" id="view-thanks">
+  <div class="thanks-wrap">
+    <div class="thanks-check">✓</div>
+    <h1 class="thanks-title">Thank you</h1>
+    <p class="thanks-sub">Your response has been recorded and will be reviewed by your Cohort leads. All responses are anonymous and help shape a better experience for the group.</p>
+    <div class="thanks-btns">
+      <button class="thanks-btn thanks-btn-outline" onclick="resetSurvey()">Submit another response</button>
+      <button class="thanks-btn thanks-btn-fill" onclick="showView('dashboard')">View Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ DASHBOARD ════════════════════ -->
+<div class="view" id="view-dashboard">
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <div class="dash-eyebrow">Cohort Pulse Survey</div>
+      <h2 class="dash-title">Analytics Dashboard</h2>
+      <p class="dash-meta" id="dash-meta">Loading…</p>
+    </div>
+
+    <div class="slicer-bar">
+      <div class="slicer-item">
+        <div class="slicer-label">⊞ Level</div>
+        <select id="slicer-level" onchange="renderDashboard()">
+          <option value="All">All Levels</option>
+          <option>Senior Director (SD)</option><option>Director (D)</option>
+          <option>Senior Manager (SM)</option><option>Manager</option>
+          <option>Senior Associate</option><option>Associate</option>
+        </select>
+      </div>
+      <div class="slicer-item">
+        <div class="slicer-label">Business Unit</div>
+        <select id="slicer-bu" onchange="renderDashboard()">
+          <option value="All">All Business Units</option>
+          <option>Restructuring</option><option>Performance Improvement</option>
+          <option>Transaction Advisory</option><option>Disputes &amp; Investigations</option>
+          <option>Tax</option><option>CFO Advisory</option>
+          <option>Technology</option><option>Other</option>
+        </select>
+      </div>
+      <div class="slicer-item">
+        <div class="slicer-label">Home Office</div>
+        <select id="slicer-office" onchange="renderDashboard()">
+          <option value="All">All Offices</option>
+          <option>Sydney</option><option>Melbourne</option>
+          <option>Brisbane</option><option>Perth</option>
+        </select>
+      </div>
+      <button class="slicer-reset" onclick="resetFilters()">↺ Reset</button>
+      <div class="slicer-count" id="slicer-count">— responses</div>
+    </div>
+
+    <!-- Recipient Tracker -->
+    <div class="recipient-section">
+      <div class="recipient-header">
+        <div class="recipient-title">📋 Recipient Tracker</div>
+        <div class="recipient-stats">
+          <div class="rstat">
+            <div class="rstat-val" id="rstat-total" style="color:var(--amber)">0</div>
+            <div class="rstat-lbl">Recipients</div>
+          </div>
+          <div class="rstat">
+            <div class="rstat-val" id="rstat-responded" style="color:var(--green)">0</div>
+            <div class="rstat-lbl">Responded</div>
+          </div>
+          <div class="rstat">
+            <div class="rstat-val" id="rstat-pending" style="color:var(--slate)">0</div>
+            <div class="rstat-lbl">Pending</div>
+          </div>
+        </div>
+      </div>
+      <div class="completion-bar-wrap">
+        <div class="completion-bar-track">
+          <div class="completion-bar-fill" id="completion-bar" style="width:0%"></div>
+        </div>
+        <div class="completion-pct" id="completion-pct">0% completion rate</div>
+      </div>
+      <div class="recipient-input-row">
+        <textarea class="recipient-textarea" id="recipient-input"
+          placeholder="Paste names or emails, one per line:&#10;Jane Smith&#10;john.doe@am.com&#10;Alex Johnson"></textarea>
+        <button class="recipient-load-btn" onclick="loadRecipients()">Load List</button>
+      </div>
+      <div class="recipient-table-wrap">
+        <div class="recipient-empty" id="recipient-empty">No recipients loaded yet. Paste a list above and click Load List.</div>
+        <table class="recipient-table" id="recipient-table" style="display:none">
+          <thead>
+            <tr>
+              <th>Name / Email</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recipient-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-heading">Key Scores</div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <hr class="divider">
+
+    <div class="section-heading">Score Distributions</div>
+    <div class="chart-grid" id="dist-grid"></div>
+    <hr class="divider">
+
+    <div class="section-heading">Breakdowns by Group</div>
+    <div class="chart-grid" id="breakdown-grid"></div>
+    <hr class="divider">
+
+    <div class="comments-section">
+      <div class="comments-title" id="comments-heading">Open Comments</div>
+      <div class="comments-scroll" id="comments-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Airtable Config ─────────────────────────────────────────
+const AIRTABLE_TOKEN = "pat37LnhgceMKIWhD.a435cbe1475f7cc703f0b25ac1d51f322e63ce11d279b99929e2af73726ed5ca";
+const AIRTABLE_BASE  = "appua42Mqv613LVBu";
+const AIRTABLE_TABLE = "Responses";
+
+// ─── Constants ───────────────────────────────────────────────
+const LEVELS = ["Senior Director (SD)","Director (D)","Senior Manager (SM)","Manager","Senior Associate","Associate"];
+const BUS = ["Restructuring","Performance Improvement","Transaction Advisory","Disputes & Investigations","Tax","CFO Advisory","Technology","Other"];
+const OFFICES = ["Sydney","Melbourne","Brisbane","Perth"];
+const RATING_LABELS = ["","Strongly Disagree","Disagree","Neutral","Agree","Strongly Agree"];
+const RCOLORS = ["","#ef4444","#f97316","#f59e0b","#84cc16","#22c55e"];
+
+// ─── Admin PIN ────────────────────────────────────────────────
+const ADMIN_PIN = "1511";
+let dashboardUnlocked = false;
+
+// ─── Recipients list (name, email — paste in here or via UI) ─
+// Format: [{ name: "Jane Smith", email: "jane@am.com" }, ...]
+let recipients = [];
+
+// ─── State ───────────────────────────────────────────────────
+let responses = [];
+let formData = resetForm();
+let currentStep = 0;
+
+function resetForm() {
+  return { level:'', bu:'', office:'', q1a:0, q1b:0, q1c:0, q2:0, q3:0, q4:0, q5:0, comments:'' };
+}
+
+// ─── View switching ──────────────────────────────────────────
+function showView(v) {
+  if (v === 'dashboard' && !dashboardUnlocked) {
+    showPinModal();
+    return;
+  }
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  const t = document.getElementById('tab-' + v);
+  if (t) t.classList.add('active');
+  if (v === 'dashboard') fetchFromAirtable();
+}
+
+// ─── PIN Modal ────────────────────────────────────────────────
+function showPinModal() {
+  document.getElementById('pin-modal').style.display = 'flex';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').style.display = 'none';
+  setTimeout(() => document.getElementById('pin-input').focus(), 100);
+}
+
+function closePinModal() {
+  document.getElementById('pin-modal').style.display = 'none';
+}
+
+function submitPin() {
+  const val = document.getElementById('pin-input').value.trim();
+  if (val === ADMIN_PIN) {
+    dashboardUnlocked = true;
+    closePinModal();
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('view-dashboard').classList.add('active');
+    document.getElementById('tab-dashboard').classList.add('active');
+    fetchFromAirtable();
+  } else {
+    const err = document.getElementById('pin-error');
+    err.style.display = 'block';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+    setTimeout(() => { err.style.display = 'none'; }, 3000);
+  }
+}
+
+// ─── Rating buttons ──────────────────────────────────────────
+function buildRatingBtns(containerId, qKey) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.createElement('button');
+    btn.className = `rating-btn r${i}` + (formData[qKey] >= i ? ' sel' : '');
+    btn.textContent = i;
+    btn.title = RATING_LABELS[i];
+    btn.onclick = (function(val) {
+      return function() {
+        formData[qKey] = val;
+        // Rebuild this rating's buttons to reflect selection
+        buildRatingBtns(containerId, qKey);
+        updateState();
+      };
+    })(i);
+    c.appendChild(btn);
+  }
+  const pill = document.createElement('span');
+  pill.className = 'rating-pill';
+  pill.textContent = formData[qKey] ? RATING_LABELS[formData[qKey]] : '';
+  c.appendChild(pill);
+}
+
+function buildAllRatings() {
+  ['q1a','q1b','q1c','q2','q3','q4','q5'].forEach(k => buildRatingBtns(k + '-btns', k));
+}
+
+// ─── Survey logic ─────────────────────────────────────────────
+function updateQ2Label() {
+  const isSM = formData.level === "Senior Manager (SM)";
+  const el = document.getElementById('q2-label');
+  if (el) el.textContent = isSM
+    ? "My skills and preferences are considered when decisions are being made regarding staffing, projects and/or initiatives"
+    : "I am able to staff teams I am leading effectively, and with the right skills";
+}
+
+function buildProgressTrack() {
+  const t = document.getElementById('progress-track');
+  t.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const s = document.createElement('div');
+    s.className = 'progress-seg' + (i <= currentStep ? ' done' : '');
+    t.appendChild(s);
+  }
+}
+
+function updateState() {
+  formData.level = document.getElementById('f-level').value;
+  formData.bu = document.getElementById('f-bu').value;
+  formData.office = document.getElementById('f-office').value;
+  const fc = document.getElementById('f-comments');
+  if (fc) formData.comments = fc.value;
+  updateQ2Label();
+  const canStep = [
+    !!(formData.level && formData.bu && formData.office),
+    !!(formData.q1a && formData.q1b && formData.q1c),
+    !!(formData.q2 && formData.q3),
+    !!(formData.q4 && formData.q5),
+    true
+  ];
+  for (let i = 0; i < 4; i++) {
+    const btn = document.getElementById('btn-' + i);
+    if (btn) btn.disabled = !canStep[i];
+  }
+}
+
+function goStep(n) {
+  document.getElementById('step-' + currentStep).style.display = 'none';
+  currentStep = n;
+  document.getElementById('step-' + currentStep).style.display = 'block';
+  buildProgressTrack();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitSurvey() {
+  const fc = document.getElementById('f-comments');
+  formData.comments = fc ? fc.value : '';
+  const isSM = formData.level === "Senior Manager (SM)";
+
+  const submitBtn = document.querySelector('.btn-submit');
+  submitBtn.textContent = 'Saving…';
+  submitBtn.disabled = true;
+
+  const record = {
+    fields: {
+      Level:        formData.level,
+      BusinessUnit: formData.bu,
+      Office:       formData.office,
+      Q1a:          formData.q1a,
+      Q1b:          formData.q1b,
+      Q1c:          formData.q1c,
+      Q2:           formData.q2,
+      Q2_Type:      isSM ? "SM" : "D/SD",
+      Q3:           formData.q3,
+      Q4:           formData.q4,
+      Q5:           formData.q5,
+      Comments:     formData.comments,
+      SubmittedAt:  new Date().toISOString()
+    }
+  };
+
+  try {
+    const res = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE}/${AIRTABLE_TABLE}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${AIRTABLE_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ records: [record] })
+      }
+    );
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Airtable error ' + res.status);
+    }
+    // Also store locally so dashboard reflects new response this session
+    responses.push({ ...formData, id: responses.length, q2_type: isSM ? "SM" : "D/SD" });
+    showView('thanks');
+  } catch (err) {
+    alert('Could not save your response. Please check your connection and try again.\n\nDetail: ' + err.message);
+    submitBtn.textContent = 'Submit Response ✓';
+    submitBtn.disabled = false;
+  }
+}
+
+function resetSurvey() {
+  formData = resetForm();
+  document.getElementById('f-level').value = '';
+  document.getElementById('f-bu').value = '';
+  document.getElementById('f-office').value = '';
+  const fc = document.getElementById('f-comments');
+  if (fc) fc.value = '';
+  buildAllRatings();
+  goStep(0);
+  showView('survey');
+}
+
+// ─── Dashboard ────────────────────────────────────────────────
+function getFiltered() {
+  const fl = document.getElementById('slicer-level').value;
+  const fb = document.getElementById('slicer-bu').value;
+  const fo = document.getElementById('slicer-office').value;
+  return responses.filter(r =>
+    (fl === 'All' || r.level === fl) &&
+    (fb === 'All' || r.bu === fb) &&
+    (fo === 'All' || r.office === fo)
+  );
+}
+
+function avg(arr, key) {
+  const valid = arr.filter(r => r[key] > 0);
+  if (!valid.length) return 0;
+  return valid.reduce((s, r) => s + r[key], 0) / valid.length;
+}
+
+function rColor(v) {
+  if (v >= 4.5) return '#22c55e';
+  if (v >= 3.5) return '#84cc16';
+  if (v >= 2.5) return '#f59e0b';
+  if (v >= 1.5) return '#f97316';
+  return '#ef4444';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderDashboard() {
+  renderRecipients();
+  const filtered = getFiltered();
+  document.getElementById('dash-meta').innerHTML =
+    `<strong>${responses.length}</strong> total responses &nbsp;·&nbsp; FY26 Cohort &nbsp;·&nbsp; Showing <strong>${filtered.length}</strong> matching`;
+  document.getElementById('slicer-count').textContent = filtered.length + ' responses';
+
+  // KPIs
+  const kpis = [
+    {label:"PM Tool Effectiveness",key:"q1a"}, {label:"PM Process Clarity",key:"q1b"},
+    {label:"Measurement Clarity",key:"q1c"}, {label:"Staffing & Skills",key:"q2"},
+    {label:"Employer of Choice",key:"q3"}, {label:"Firm-wide Comms",key:"q4"},
+    {label:"BU Comms",key:"q5"},
+  ];
+  document.getElementById('kpi-grid').innerHTML = kpis.map(k => {
+    const v = avg(filtered, k.key);
+    return `<div class="kpi-card">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value" style="color:${rColor(v)}">${v.toFixed(2)}</div>
+      <div class="kpi-n">n = ${filtered.filter(r=>r[k.key]>0).length}</div>
+    </div>`;
+  }).join('');
+
+  // Distributions
+  const dists = [
+    {title:"Q1a — PM Tool Effectiveness",key:"q1a"},
+    {title:"Q1b — PM Process Clarity",key:"q1b"},
+    {title:"Q1c — Measurement Clarity",key:"q1c"},
+    {title:"Q2 — Staffing & Skills",key:"q2"},
+    {title:"Q3 — Employer of Choice",key:"q3"},
+    {title:"Q4 — Firm-wide Comms",key:"q4"},
+  ];
+  document.getElementById('dist-grid').innerHTML = dists.map(ch => {
+    const counts = [1,2,3,4,5].map(n => filtered.filter(r => r[ch.key] === n).length);
+    const maxC = Math.max(...counts, 1);
+    const avgV = avg(filtered, ch.key);
+    const bars = counts.map((c, i) => {
+      const h = Math.max((c/maxC)*68, c>0?4:0);
+      return `<div class="dist-col">
+        <div class="dist-count">${c}</div>
+        <div class="dist-bar" style="height:${h}px;background:${RCOLORS[i+1]}"></div>
+        <div class="dist-num">${i+1}</div>
+      </div>`;
+    }).join('');
+    return `<div class="chart-card">
+      <div class="chart-title">${ch.title}</div>
+      <div class="chart-sub">Avg: <strong style="color:${rColor(avgV)}">${avgV.toFixed(2)}</strong> · Score distribution (1–5)</div>
+      <div class="dist-bars">${bars}</div>
+    </div>`;
+  }).join('');
+
+  // Breakdowns
+  function makeHBars(groups, qKey) {
+    const data = groups
+      .map(g => ({ label: g.label, value: avg(filtered.filter(g.filter), qKey) }))
+      .filter(d => d.value > 0)
+      .sort((a,b) => b.value - a.value);
+    if (!data.length) return '<div style="font-size:12px;color:var(--slate-dim);text-align:center;padding:20px">No data for current filters</div>';
+    return data.map(d => `
+      <div class="hbar-row">
+        <div class="hbar-header">
+          <span class="hbar-lbl">${escHtml(d.label)}</span>
+          <span class="hbar-val" style="color:${rColor(d.value)}">${d.value.toFixed(2)}</span>
+        </div>
+        <div class="hbar-track">
+          <div class="hbar-fill" style="width:${(d.value/5)*100}%;background:${rColor(d.value)}"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  const buGroups     = BUS.map(b => ({ label: b, filter: r => r.bu === b }));
+  const officeGroups = OFFICES.map(o => ({ label: o, filter: r => r.office === o }));
+  const levelGroups  = LEVELS.map(l => ({ label: l.replace(/\s*\(.*\)/,''), filter: r => r.level === l }));
+
+  document.getElementById('breakdown-grid').innerHTML = `
+    <div class="chart-card">
+      <div class="chart-title">Q3 — Employer of Choice by BU</div>
+      <div class="chart-sub">Ranked by average score</div>
+      ${makeHBars(buGroups,'q3')}
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Q1a — PM Tool Effectiveness by Level</div>
+      <div class="chart-sub">Ranked by average score</div>
+      ${makeHBars(levelGroups,'q1a')}
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Q4 — Firm-wide Comms by Office</div>
+      <div class="chart-sub">Ranked by average score</div>
+      ${makeHBars(officeGroups,'q4')}
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Q2 — Staffing & Skills by BU</div>
+      <div class="chart-sub">Ranked by average score</div>
+      ${makeHBars(buGroups,'q2')}
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Q5 — BU Comms by Level</div>
+      <div class="chart-sub">Ranked by average score</div>
+      ${makeHBars(levelGroups,'q5')}
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Q3 — Employer of Choice by Office</div>
+      <div class="chart-sub">Ranked by average score</div>
+      ${makeHBars(officeGroups,'q3')}
+    </div>
+  `;
+
+  // Comments
+  const comments = filtered.filter(r => r.comments && r.comments.trim());
+  document.getElementById('comments-heading').textContent = `Open Comments (${comments.length})`;
+  const list = document.getElementById('comments-list');
+  if (!comments.length) {
+    list.innerHTML = '<div class="comments-empty">No comments for the current filter selection.</div>';
+  } else {
+    list.innerHTML = comments.map(r => `
+      <div class="comment-card">
+        <div class="comment-meta">${escHtml(r.level)} · ${escHtml(r.bu)} · ${escHtml(r.office)}</div>
+        <div class="comment-text">${escHtml(r.comments)}</div>
+      </div>`).join('');
+  }
+}
+
+function resetFilters() {
+  document.getElementById('slicer-level').value = 'All';
+  document.getElementById('slicer-bu').value = 'All';
+  document.getElementById('slicer-office').value = 'All';
+  renderDashboard();
+}
+
+// ─── Recipient Tracking ───────────────────────────────────────
+function loadRecipients() {
+  const raw = document.getElementById('recipient-input').value.trim();
+  if (!raw) return;
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  // Merge: keep existing, add new ones
+  const existing = new Set(recipients.map(r => r.name.toLowerCase()));
+  lines.forEach(line => {
+    if (!existing.has(line.toLowerCase())) {
+      recipients.push({ name: line, responded: false });
+      existing.add(line.toLowerCase());
+    }
+  });
+  document.getElementById('recipient-input').value = '';
+  renderRecipients();
+}
+
+function renderRecipients() {
+  const total = recipients.length;
+  // Mark responded: simple name-match against responses (by email/name in comments field not ideal,
+  // so we track separately — admin can manually mark, or match is done via response count proxy)
+  const responded = recipients.filter(r => r.responded).length;
+  const pending = total - responded;
+  const pct = total > 0 ? Math.round((responded / total) * 100) : 0;
+
+  document.getElementById('rstat-total').textContent = total;
+  document.getElementById('rstat-responded').textContent = responded;
+  document.getElementById('rstat-pending').textContent = pending;
+  document.getElementById('completion-bar').style.width = pct + '%';
+  document.getElementById('completion-pct').textContent = pct + '% completion rate';
+
+  const empty = document.getElementById('recipient-empty');
+  const table = document.getElementById('recipient-table');
+  const tbody = document.getElementById('recipient-tbody');
+
+  if (!total) {
+    empty.style.display = 'block';
+    table.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  table.style.display = 'table';
+
+  tbody.innerHTML = recipients.map((r, i) => `
+    <tr>
+      <td>${escHtml(r.name)}</td>
+      <td>
+        <span class="status-pill ${r.responded ? 'completed' : 'pending'}"
+          onclick="toggleResponded(${i})" style="cursor:pointer" title="Click to toggle">
+          ${r.responded ? '✓ Responded' : 'Pending'}
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+function toggleResponded(i) {
+  recipients[i].responded = !recipients[i].responded;
+  renderRecipients();
+}
+
+// ─── Airtable Fetch (Dashboard) ───────────────────────────────
+async function fetchFromAirtable() {
+  // Show loading state
+  document.getElementById('dash-meta').innerHTML = '<span style="color:var(--slate-dim)">⟳ Loading responses from Airtable…</span>';
+  document.getElementById('kpi-grid').innerHTML = '<div style="color:var(--slate-dim);font-size:13px;padding:8px 0">Loading…</div>';
+
+  try {
+    let allRecords = [];
+    let offset = null;
+
+    // Airtable paginates at 100 records — loop until all fetched
+    do {
+      const url = new URL(`https://api.airtable.com/v0/${AIRTABLE_BASE}/${AIRTABLE_TABLE}`);
+      url.searchParams.set('pageSize', '100');
+      if (offset) url.searchParams.set('offset', offset);
+
+      const res = await fetch(url.toString(), {
+        headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` }
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || 'Airtable error ' + res.status);
+      }
+      const data = await res.json();
+      allRecords = allRecords.concat(data.records);
+      offset = data.offset || null;
+    } while (offset);
+
+    // Map Airtable records → internal response objects
+    responses = allRecords.map((r, i) => ({
+      id:       i,
+      level:    r.fields.Level        || '',
+      bu:       r.fields.BusinessUnit || '',
+      office:   r.fields.Office       || '',
+      q1a:      Number(r.fields.Q1a)  || 0,
+      q1b:      Number(r.fields.Q1b)  || 0,
+      q1c:      Number(r.fields.Q1c)  || 0,
+      q2:       Number(r.fields.Q2)   || 0,
+      q2_type:  r.fields.Q2_Type      || '',
+      q3:       Number(r.fields.Q3)   || 0,
+      q4:       Number(r.fields.Q4)   || 0,
+      q5:       Number(r.fields.Q5)   || 0,
+      comments: r.fields.Comments     || ''
+    }));
+
+    renderDashboard();
+
+  } catch (err) {
+    document.getElementById('dash-meta').innerHTML =
+      `<span style="color:#ef4444">⚠ Could not load data: ${escHtml(err.message)}</span>`;
+    document.getElementById('kpi-grid').innerHTML = '';
+  }
+}
+
+// ─── Init ─────────────────────────────────────────────────────
+buildAllRatings();
+buildProgressTrack();
+updateState();
+</script>
+</body>
+</html>
